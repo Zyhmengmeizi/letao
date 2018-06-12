@@ -11,6 +11,7 @@ var category = require('./routes/category');
 var cart = require('./routes/cart');
 var address = require('./routes/address');
 var employee = require('./routes/employee');
+var cors = require('cors');
 
 var app = express();
 
@@ -22,15 +23,21 @@ app.use(session({
     saveUninitialized: true
 }));
 
-app.use(function (req, res, next) {
-    var url = req.originalUrl;
-    if (!req.session.employee
-        && ((url.indexOf('/admin') > -1 && url.indexOf('.html') > -1) || url == '/admin/' )
-        && url.indexOf('/admin/login.html') == -1) {
-        return res.redirect('/admin/login.html');
-    }
-    next();
-});
+// app.use(function (req, res, next) {
+//     var url = req.originalUrl;
+//     if (!req.session.employee
+//         && ((url.indexOf('/admin') > -1 && url.indexOf('.html') > -1) || url == '/admin/' )
+//         && url.indexOf('/admin/login.html') == -1) {
+//         return res.redirect('/admin/login.html');
+//     }
+//     next();
+// });
+
+// 允许跨域
+app.use(cors({
+    origin: ['http://m.letao.com', 'http://www.letao.com'],
+    credentials: true
+}));
 
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
